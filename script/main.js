@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 //Search Longitude and Latitude based on the City's name
-var cityName = 'Colorado';
+var cityName = 'Sao Paulo';
 var geocodingURL = "https://geocoding-api.open-meteo.com/v1/search?name=".concat(cityName, "&count=1&language=en&format=json");
 var getCityCoordinates = function () {
     fetch(geocodingURL, {
@@ -11,7 +11,16 @@ var getCityCoordinates = function () {
         }
     })
         .then(function (resp) { return resp.json(); })
-        .then(function (data) { return console.log(data); })
+        .then(function (data) {
+        console.log(data);
+        var latitude = data.results[0].latitude;
+        var longitude = data.results[0].longitude;
+        var coordinates = {
+            lat: latitude,
+            lon: longitude
+        };
+        return console.log(coordinates);
+    })
         .catch(function (error) { return console.error(error); });
 };
 getCityCoordinates();

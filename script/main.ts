@@ -1,5 +1,5 @@
 //Search Longitude and Latitude based on the City's name
-const cityName = 'Colorado'
+const cityName = 'Sao Paulo'
 const geocodingURL = `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1&language=en&format=json`
 const getCityCoordinates = () => {
     fetch(geocodingURL, {
@@ -10,11 +10,16 @@ const getCityCoordinates = () => {
     })
     .then(resp => resp.json())
     .then(data => {
-        data.forEach(coords => {
-            const coordinates: {lat: string, lon: string} {
-                lat: coords.latitude
-            }
-        })
+        console.log(data)
+        let latitude: string = data.results[0].latitude
+        let longitude: string = data.results[0].longitude
+
+        const coordinates: {lat: string, lon: string} = {
+            lat: latitude,
+            lon: longitude
+        }
+
+        return console.log(coordinates)
     })
     .catch(error => console.error(error)) 
 }
