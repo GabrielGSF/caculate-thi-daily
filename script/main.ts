@@ -1,3 +1,30 @@
+//Search Longitude and Latitude based on the City's name
+const cityName = 'Colorado'
+const geocodingURL = `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1&language=en&format=json`
+const getCityCoordinates = () => {
+    fetch(geocodingURL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        data.forEach(coords => {
+            const coordinates: {lat: string, lon: string} {
+                lat: coords.latitude
+            }
+        })
+    })
+    .catch(error => console.error(error)) 
+}
+getCityCoordinates()
+
+
+
+
+
+
 let days: dailyTHI[] = []
 
 class dailyTHI  {
@@ -35,6 +62,6 @@ for (let i = daysPeriod; i > 0; i--) {
     days.push(THI)
 }
 
-console.log(days)
+// console.log(days)
 
 export{};

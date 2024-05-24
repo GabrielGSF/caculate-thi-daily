@@ -1,5 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//Search Longitude and Latitude based on the City's name
+var cityName = 'Colorado';
+var geocodingURL = "https://geocoding-api.open-meteo.com/v1/search?name=".concat(cityName, "&count=1&language=en&format=json");
+var getCityCoordinates = function () {
+    fetch(geocodingURL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(function (resp) { return resp.json(); })
+        .then(function (data) { return console.log(data); })
+        .catch(function (error) { return console.error(error); });
+};
+getCityCoordinates();
 var days = [];
 var dailyTHI = /** @class */ (function () {
     function dailyTHI() {
@@ -27,4 +42,3 @@ for (var i = daysPeriod; i > 0; i--) {
     THI.thi = thiResult;
     days.push(THI);
 }
-console.log(days);
