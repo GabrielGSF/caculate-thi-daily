@@ -1,29 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 //Search Longitude and Latitude based on the City's name
-var cityName = 'Sao Paulo';
-var geocodingURL = "https://geocoding-api.open-meteo.com/v1/search?name=".concat(cityName, "&count=1&language=en&format=json");
-var getCityCoordinates = function () {
-    fetch(geocodingURL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+function getCityCoordinates() {
+    var getCityNameInput = function () {
+        return document.getElementById('cityName').value;
+    };
+    var geocodingURL = "https://geocoding-api.open-meteo.com/v1/search?name=".concat(getCityNameInput(), "&count=1&language=en&format=json");
+    fetch(geocodingURL)
+        .then(function (response) {
+        if (!response.ok) {
+            throw response;
         }
+        return response.json();
     })
-        .then(function (resp) { return resp.json(); })
         .then(function (data) {
-        console.log(data);
+        var cityName = data.results[0].name;
         var latitude = data.results[0].latitude;
         var longitude = data.results[0].longitude;
         var coordinates = {
+            name: cityName,
             lat: latitude,
             lon: longitude
         };
+        var name = "<h1>".concat(coordinates.name, "</h1>");
+        var lat = "<h2>".concat(coordinates.lat, "</h2>");
+        var lon = "<h2>".concat(coordinates.lon, "</h2>");
+        document.querySelector('div').insertAdjacentHTML("beforeend", name);
+        document.querySelector('div').insertAdjacentHTML("beforeend", lat);
+        document.querySelector('div').insertAdjacentHTML("beforeend", lon);
         return console.log(coordinates);
     })
         .catch(function (error) { return console.error(error); });
-};
-getCityCoordinates();
+}
+// Lógica
 var days = [];
 var dailyTHI = /** @class */ (function () {
     function dailyTHI() {

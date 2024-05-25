@@ -1,35 +1,41 @@
 //Search Longitude and Latitude based on the City's name
-const cityName = 'Sao Paulo'
-const geocodingURL = `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1&language=en&format=json`
-const getCityCoordinates = () => {
-    fetch(geocodingURL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+function getCityCoordinates(): void {
+    const getCityNameInput = () => {
+        return (<HTMLInputElement>document.getElementById('cityName')).value
+    }
+    const geocodingURL = `https://geocoding-api.open-meteo.com/v1/search?name=${getCityNameInput()}&count=1&language=en&format=json`
+    fetch(geocodingURL)
+    .then((response) => {
+        if (!response.ok) {
+            throw response
         }
+        return response.json()
     })
-    .then(resp => resp.json())
     .then(data => {
-        console.log(data)
+
+        let cityName: string = data.results[0].name
         let latitude: string = data.results[0].latitude
         let longitude: string = data.results[0].longitude
 
-        const coordinates: {lat: string, lon: string} = {
+        const coordinates: {name: string, lat: string, lon: string} = {
+            name: cityName,
             lat: latitude,
             lon: longitude
         }
+
+        const name = `<h1>${coordinates.name}</h1>`
+        const lat = `<h2>${coordinates.lat}</h2>`
+        const lon = `<h2>${coordinates.lon}</h2>`
+        document.querySelector('div')!.insertAdjacentHTML("beforeend", name)
+        document.querySelector('div')!.insertAdjacentHTML("beforeend", lat)
+        document.querySelector('div')!.insertAdjacentHTML("beforeend", lon)
 
         return console.log(coordinates)
     })
     .catch(error => console.error(error)) 
 }
-getCityCoordinates()
 
-
-
-
-
-
+// Lógica
 let days: dailyTHI[] = []
 
 class dailyTHI  {
