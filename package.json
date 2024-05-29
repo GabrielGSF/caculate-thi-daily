@@ -12,6 +12,10 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "esrun": "^3.2.26",
     "openmeteo": "^1.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12"
   }
 }
