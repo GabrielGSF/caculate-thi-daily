@@ -1,0 +1,18 @@
+/* #result {
+    border: 1px dotted #ccc;
+    padding: 3px;
+} */
+ul {
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 99;
+}
+#result ul li {
+    padding: 5px 0;
+    background: white;
+}
+#result ul li:hover {
+    background: #eee;
+}

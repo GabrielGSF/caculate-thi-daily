@@ -1,25 +1,67 @@
 import { fetchWeatherApi } from "openmeteo"
 import * as _ from 'lodash';
 
-//Search Longitude and Latitude based on the City's name
-const getCityCoordinates = async () => {
-    const getCityNameInput = () => {
-        return (<HTMLInputElement>document.getElementById('cityName')).value
+//Autocomplete show results
+function showResults(input: string) {
+    let res = document.getElementById("result")
+    res.innerHTML = ''
+    if (input == '') {
+        return;
     }
-    const geocodingURL = `https://geocoding-api.open-meteo.com/v1/search?name=${getCityNameInput()}&count=1&language=en&format=json`
-    const res = await fetch(geocodingURL)
-    const data = await res.json()
+    let list = ''
 
-    let coordinates: { lat: number, lon: number } = {
-        lat: data.results[0].latitude,
-        lon: data.results[0].longitude
-    }
-    return coordinates
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${input}&count=10&language=en&format=json`).then(
+        function(response) {
+            return response.json()
+        }).then(function (data) {
+            for (let i = 0; i < data.results.length; i++) {
+                list += `<li
+                            class="list-group-item" 
+                            onclick="setCity(
+                                ${data.results[i].latitude},
+                                ${data.results[i].longitude},
+                                '${data.results[i].name}',
+                                '${data.results[i].admin1}',
+                                '${data.results[i].country}'
+                            )">
+                            ${data.results[i].name}, ${data.results[i].admin1}, ${data.results[i].country}
+                        </li>`
+            }
+            res.innerHTML = '<ul class="result-item list-group">' + list +  '</ul>'
+            return true;
+        }).catch(function (err) {
+            console.warn('Something went wrong.', err)
+            return false
+        })     
 }
+window.showResults = showResults
+
+let coordinates: {lat: string, lon: string, name: string, admin1: string, country: string} = {
+    lat: '',
+    lon:  '',
+    name: '',
+    admin1: '',
+    country: ''
+}
+function setCity(lat: string, lon: string, name: string, admin1: string, country: string) {
+    coordinates.lat = lat;
+    coordinates.lon = lon;
+    coordinates.name = name;
+    coordinates.admin1 = admin1;
+    coordinates.country = country;
+    document.querySelector(".result-item").remove();
+
+    //City Information
+    (<HTMLInputElement>document.getElementById("cityName")).value = coordinates.name + ", " + coordinates.admin1 + ", " + coordinates.country;
+    document.querySelector('#cityInformation')!.innerHTML = `${coordinates.name} - ${coordinates.admin1} - ${coordinates.country}`;
+    document.querySelector('#cityCoordinates')!.innerHTML = `Latitude: ${coordinates.lat}, Longitude: ${coordinates.lon}`;
+
+}
+window.setCity = setCity
+
 
 //Get the Weaather Information of Temperature and Relative Humidity based on Input Information
 const getWeatherInfo = async () => {
-    const coords = await getCityCoordinates()
     const getStartDate = () => {
         return (<HTMLInputElement>document.getElementById('startDate')).value
     }
@@ -27,8 +69,8 @@ const getWeatherInfo = async () => {
         return (<HTMLInputElement>document.getElementById('endDate')).value
     }
     const params = {
-        "latitude": coords.lat,
-        "longitude": coords.lon,
+        "latitude": coordinates.lat,
+        "longitude": coordinates.lon,
         "start_date": getStartDate(),
         "end_date": getEndDate(),
         "hourly": ["temperature_2m", "relative_humidity_2m"]
@@ -110,8 +152,8 @@ const countTHIDays = async () => {
     for (const [date, obj] of Object.entries(daysThi)) {
         // @ts-ignore
         let thi = obj.THI
-        console.log(thi)
-        console.log(date)
+        // console.log(thi)
+        // console.log(date)
         if(thi > 100) {
             countsStressDays.deadlyHeat += 1
         } else if (thi >= 68.00 && thi < 72.00) {
@@ -127,7 +169,7 @@ const countTHIDays = async () => {
         }
 
         const table = `
-            <tr>
+            <tr class="table-data">
                 <th socope="row">${date}</th>
                 <td>${obj.temperature}</td>
                 <td>${obj.humidity}</td>
@@ -143,6 +185,8 @@ declare const window: any;
 
 async function showCalcTHI() {
     const values = await countTHIDays();
+
+    //Table data
     document.querySelector('#noStress')!.innerHTML = `${values.noStress}`
     document.querySelector('#lightHeat')!.innerHTML = `${values.lightHeat}`
     document.querySelector('#moderateHeat')!.innerHTML = `${values.moderateHeat}`
