@@ -28,6 +28,13 @@ function showResults(input: string) {
                         </li>`
             }
             res.innerHTML = '<ul class="result-item list-group">' + list +  '</ul>'
+            
+            document.addEventListener('click', function() {
+                let itensList = document.querySelector(".result-item")
+                if(itensList !== null) {
+                    document.querySelector(".result-item").remove();
+                }
+            })
             return true;
         }).catch(function (err) {
             console.warn('Something went wrong.', err)
@@ -58,7 +65,6 @@ function setCity(lat: string, lon: string, name: string, admin1: string, country
 
 }
 window.setCity = setCity
-
 
 //Get the Weaather Information of Temperature and Relative Humidity based on Input Information
 const getWeatherInfo = async () => {
@@ -178,15 +184,28 @@ const countTHIDays = async () => {
         `
         document.querySelector('#daysData')!.insertAdjacentHTML('beforeend', table)
     }
+    
     return countsStressDays
 };
 
 declare const window: any;
 
 async function showCalcTHI() {
+    // let tableData = document.querySelector(".table-data")
+    // if(tableData !== null) {
+    //     document.querySelector(".table-data").remove();
+    // }
+
+    let itensList = document.getElementsByClassName("table-data")
+    if(itensList !== null) {
+        while(itensList.length > 0){
+            itensList[0].parentNode.removeChild(itensList[0]);
+        }
+    }
+    
     const values = await countTHIDays();
 
-    //Table data
+    //Table Stress data
     document.querySelector('#noStress')!.innerHTML = `${values.noStress}`
     document.querySelector('#lightHeat')!.innerHTML = `${values.lightHeat}`
     document.querySelector('#moderateHeat')!.innerHTML = `${values.moderateHeat}`
