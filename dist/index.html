@@ -41,7 +41,9 @@
     </div>
     
     <div class="container mt-3">
-        <table class="table border">
+      <div class="row">
+        <div class="col">
+          <table class="table border">
             <thead>
               <tr>
                 <th scope="col">Stress Status</th>
@@ -74,11 +76,11 @@
                 <td id="deadlyHeat">0</td>
               </tr>
             </tbody>
-          </table>    
-    </div>
+          </table>
+        </div>
 
-    <div class="container mt-3">
-        <table class="table border">
+        <div class="col">
+          <table class="table border" id="daysTable">
             <thead>
                 <tr>
                   <th scope="col">Date</th>
@@ -87,8 +89,10 @@
                   <th scope="col">THI</th>
                 </tr>
               </thead>
-              <tbody id="daysData"></tbody>
-        </table>
+              <div id="pagination"></div>
+          </table>
+        </div>
+      </div>     
     </div>
 
     <script type="module">var exports = {};</script>

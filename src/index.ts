@@ -1,6 +1,7 @@
 import { fetchWeatherApi } from "openmeteo"
 import * as _ from 'lodash';
 
+
 //Autocomplete show results
 function showResults(input: string) {
     let res = document.getElementById("result")
@@ -122,7 +123,6 @@ const getWeatherInfo = async () => {
         })
     }
 
-    // console.log(hoursData)
     const groupedByDayWithMaxTHI = hoursData.reduce((daysLog, day) => {
             const date = day.date.split("T")[0]
             // @ts-ignore
@@ -158,8 +158,7 @@ const countTHIDays = async () => {
     for (const [date, obj] of Object.entries(daysThi)) {
         // @ts-ignore
         let thi = obj.THI
-        // console.log(thi)
-        // console.log(date)
+
         if(thi > 100) {
             countsStressDays.deadlyHeat += 1
         } else if (thi >= 68.00 && thi < 72.00) {
@@ -173,37 +172,20 @@ const countTHIDays = async () => {
         } else if (thi < 68) {
             countsStressDays.noStress += 1
         }
-
-        const table = `
-            <tr class="table-data">
-                <th socope="row">${date}</th>
-                <td>${obj.temperature}</td>
-                <td>${obj.humidity}</td>
-                <td>${obj.THI}</td>
-            </tr>
-        `
-        document.querySelector('#daysData')!.insertAdjacentHTML('beforeend', table)
     }
-    
     return countsStressDays
 };
 
 declare const window: any;
 
 async function showCalcTHI() {
-    // let tableData = document.querySelector(".table-data")
-    // if(tableData !== null) {
-    //     document.querySelector(".table-data").remove();
-    // }
 
-    let itensList = document.getElementsByClassName("table-data")
-    if(itensList !== null) {
-        while(itensList.length > 0){
-            itensList[0].parentNode.removeChild(itensList[0]);
-        }
-    }
-    
+    let data: any[] = []
+    const daysTHI = await getWeatherInfo()
     const values = await countTHIDays();
+    for (const[date, obj] of Object.entries(daysTHI)) {
+        data.push(obj)
+    }
 
     //Table Stress data
     document.querySelector('#noStress')!.innerHTML = `${values.noStress}`
@@ -212,6 +194,67 @@ async function showCalcTHI() {
     document.querySelector('#heavyHeat')!.innerHTML = `${values.heavyHeat}`
     document.querySelector('#severeHeat')!.innerHTML = `${values.severeHeat}`
     document.querySelector('#deadlyHeat')!.innerHTML = `${values.deadlyHeat}`
+
+    //Pagination of sigle days table
+    const rowsPerPage = 6;
+    let currentPage = 1
+
+    function displayTable(page: number) {
+        const table = document.getElementById("daysTable")
+        const startIndex = (page - 1) * rowsPerPage
+        const endIndex = startIndex + rowsPerPage
+        const slicedData = data.slice(startIndex, endIndex)
+        // console.log(data)
+
+        //Clear existing table rows
+        table.innerHTML = `
+            <thead>
+                <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Temperature</th>
+                <th scope="col">Humidity</th>
+                <th scope="col">THI</th>
+                </tr>
+            </thead>`;
+        
+        //Add new rows to the table
+        slicedData.forEach(item => {
+            //@ts-expect-error
+            const row = table.insertRow()
+            const dateCell = row.insertCell(0)
+            const tempCell = row.insertCell(1)
+            const humdCell = row.insertCell(2)
+            const thiCell = row.insertCell(3)
+            dateCell.innerHTML = item.date.split("T")[0]
+            tempCell.innerHTML = item.temperature
+            humdCell.innerHTML = item.humidity
+            thiCell.innerHTML = item.THI
+        })
+
+        //Update pagination
+        updatePagination(page)
+    }
+
+    function updatePagination(currentPage: number) {
+        const pageCount = Math.ceil(data.length / rowsPerPage)
+        const paginationContainer = document.getElementById("pagination")
+        paginationContainer.innerHTML = ""
+
+        for(let i = 1; i <= pageCount;  i++) {
+            const pageLink = document.createElement('a')
+            pageLink.href = '#'
+            pageLink.innerText = `${i}`
+            pageLink.onclick = function() {
+                displayTable(i)
+            }
+            if(i === currentPage) {
+                pageLink.style.fontWeight = "bold"
+            }
+            paginationContainer.appendChild(pageLink)
+            paginationContainer.appendChild(document.createTextNode(" "))
+        }
+    }
+    displayTable(currentPage)
 }
 window.showCalcTHI = showCalcTHI;
 
