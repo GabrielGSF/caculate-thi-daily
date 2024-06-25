@@ -13,7 +13,7 @@
             <div class="row g-4">
                 <div class="col">
                     <label for="cityName" class="form-label">City Name: </label>
-                      <input type="text" class="form-control" id="cityName" placeholder="Ex: São Paulo" onKeyUp="showResults(this.value)">
+                      <input type="text" class="form-control" id="cityName" placeholder="Ex: São Paulo" onKeyUp="showCityResults(this.value)">
                       <div id="result"></div>
                 </div>
                 <div class="col">
@@ -37,7 +37,8 @@
 
     <div class="container mt-3">
       <h1 id="cityInformation"></h1>
-      <p id="cityCoordinates"></p>
+      <p>Latitude: <span id="latitude"></span> </p>
+      <p>Longitude: <span id="longitude"></span></p>
     </div>
     
     <div class="container mt-3">
@@ -96,7 +97,10 @@
     </div>
 
     <script type="module">var exports = {};</script>
-    <script type="text/javascript" src="./bundle.js"></script>
+    <!-- <script type="text/javascript" src="./bundle.js"></script> -->
+    <script type="text/javascript" src="./showCalcTHI.bundle.js"></script>
+    <script type="text/javascript" src="./setCity.bundle.js"></script>
+    <script type="text/javascript" src="./showCityResults.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>

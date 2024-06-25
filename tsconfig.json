@@ -18,6 +18,13 @@
     "jsx": "react",
     "noImplicitAny": true,
   },
+  "files": [
+    "src/countTHIDays.ts",
+    "src/showCalcTHI.ts",
+    "src/getWeatherInfo.ts",
+    "src/setCity.ts",
+    "src/showCityResults.ts"
+  ],
   // "include": ["src/**/*", "dist/app.js"],
   "exclude": ["node_modules"]
 }
