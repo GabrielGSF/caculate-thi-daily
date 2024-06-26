@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { getWeatherInfo } from './getWeatherInfo';
 import { countTHIDays } from './countTHIDays';
+import { printData2 } from './acquisitions';
 
 declare const window: any;
 
@@ -79,8 +80,9 @@ async function showCalcTHI() {
             paginationContainer.appendChild(document.createTextNode(" "))
         }
     }
-    displayTable(currentPage)
+    displayTable(currentPage);
+
+    printData2();
 }
 window.showCalcTHI = showCalcTHI;
-
 export{};

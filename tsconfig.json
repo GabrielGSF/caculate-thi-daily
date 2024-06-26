@@ -10,7 +10,7 @@
     "sourceMap": true,
     "target": "es2022",
     "types": ["node"],
-    "outDir": "./dist/",
+    "outDir": "public/dist",
     // "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks":false,
     "strictPropertyInitialization": false,
@@ -23,7 +23,8 @@
     "src/showCalcTHI.ts",
     "src/getWeatherInfo.ts",
     "src/setCity.ts",
-    "src/showCityResults.ts"
+    "src/showCityResults.ts",
+    "src/acquisitions.ts"
   ],
   // "include": ["src/**/*", "dist/app.js"],
   "exclude": ["node_modules"]

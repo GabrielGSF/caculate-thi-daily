@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "chart.js": "^4.4.3",
     "cors": "^2.8.5",
     "esrun": "^3.2.26",
     "lodash": "^4.17.21",
