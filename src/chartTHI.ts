@@ -1,20 +1,19 @@
 import Chart from 'chart.js/auto'
 import { getWeatherInfo } from './getWeatherInfo';
 
-
-export async function printData2() {
+export async function chartTHI() {
     const daysTHI = await getWeatherInfo()
     let data: any[] = []
     for (const[date, obj] of Object.entries(daysTHI)) {
         data.push(obj)
     }
 
-    let chartStatus = Chart.getChart("acquisitions"); // <canvas> id
+    let chartStatus = Chart.getChart("chartTHI"); // <canvas> id
     if (chartStatus != undefined) {
         chartStatus.destroy();
     }
     
-    let grapharea =  document.getElementById('acquisitions') as HTMLCanvasElement;
+    let grapharea =  document.getElementById('chartTHI') as HTMLCanvasElement;
     let myChart = new Chart(
         grapharea,
         {

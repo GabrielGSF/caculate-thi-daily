@@ -1,7 +1,7 @@
-/* #result {
-    border: 1px dotted #ccc;
-    padding: 3px;
-} */
+body {
+    background-color: #dddddd !important;
+}
+
 ul {
     position: absolute;
     list-style: none;
@@ -19,15 +19,38 @@ ul {
 #pagination {
     text-align: center;
 }
-
-/* table, 
-th, 
-td { 
-    border: 1px solid black; 
-    border-collapse: collapse; 
-} */
+#paginationPrecip {
+    text-align: center;
+}
 
 th, 
 td { 
     padding: 10px; 
+    height: 41px;
+}
+
+.noStress {
+    background-color: #cee2f5 !important;
+}
+.light {
+    background-color: #fef6e1 !important;
+}
+.moderate {
+    background-color: #fec001 !important;
+}
+.heavy {
+    background-color: #fe7f02 !important;
+}
+.severe {
+    background-color: #fe0000 !important;
+}
+.deadly {
+    background-color: #990100 !important;
+}
+
+.card {
+    /* border: 1px solid black !important; */
+    border-radius: 15px !important;
+    border-spacing: 0 !important;
 } 
+

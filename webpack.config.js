@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -7,7 +8,11 @@ module.exports = {
     showCityResults: './src/showCityResults.ts',
     getWeatherInfo: './src/getWeatherInfo.ts',
     countTHIDays: './src/countTHIDays.ts',
-    acquisitions: "./src/acquisitions.ts"
+    chartTHI: "./src/chartTHI.ts",
+    getPrecipitation: "./src/getPrecipitation.ts",
+    chartPrecipitation: "./src/chartPrecipitation.ts",
+    thiTable: "./src/thiTable.ts",
+    precipitationTable: "./src/precipitationTable.ts"
   },
   module: {
     rules: [
@@ -23,17 +28,21 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'public/dist'),
-    // clean: true
+    path: path.resolve(__dirname, 'dist'),
+    clean: true
   },
   mode: 'development',
   devtool: 'source-map',
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, './'),
     },
     liveReload: true,
+    hot: false,
     compress: true,
     port: 9000,
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({template: "public/index.html"})
+  ] 
 };

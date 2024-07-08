@@ -2499,6 +2499,84 @@ function fetchWeatherApi(url, params, retries = 3, backoffFactor = 0.2, backoffM
 exports.fetchWeatherApi = fetchWeatherApi;
 
 
+/***/ }),
+
+/***/ "./src/getPrecipitation.ts":
+/*!*********************************!*\
+  !*** ./src/getPrecipitation.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getPrecipitation: () => (/* binding */ getPrecipitation)
+/* harmony export */ });
+/* harmony import */ var openmeteo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! openmeteo */ "./node_modules/openmeteo/lib/index.js");
+/* harmony import */ var openmeteo__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(openmeteo__WEBPACK_IMPORTED_MODULE_0__);
+
+async function getPrecipitation() {
+    let lat = document.querySelector('#latitude').innerHTML;
+    let lon = document.querySelector('#longitude').innerHTML;
+    let timezoneInput = document.querySelector('#timezone').innerHTML;
+    const getStartDate = () => {
+        return document.getElementById('startDate').value;
+    };
+    const getEndDate = () => {
+        return document.getElementById('endDate').value;
+    };
+    const params = {
+        "latitude": lat,
+        "longitude": lon,
+        "start_date": getStartDate(),
+        "end_date": getEndDate(),
+        "daily": "precipitation_sum",
+        "timezone": timezoneInput,
+    };
+    const url = "https://archive-api.open-meteo.com/v1/archive";
+    const responses = await (0,openmeteo__WEBPACK_IMPORTED_MODULE_0__.fetchWeatherApi)(url, params);
+    // Helper function to form time ranges
+    const range = (start, stop, step) => Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+    // Process first location. Add a for-loop for multiple locations or weather models
+    const response = responses[0];
+    // Attributes for timezone and location
+    const utcOffsetSeconds = response.utcOffsetSeconds();
+    const daily = response.daily();
+    // Note: The order of weather variables in the URL query and the indices below need to match!
+    const weatherData = {
+        daily: {
+            time: range(Number(daily.time()), Number(daily.timeEnd()), daily.interval()).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
+            precipitationSum: daily.variables(0).valuesArray(),
+        },
+    };
+    let dailyPrecipitation = [];
+    for (let i = 0; i < weatherData.daily.time.length; i++) {
+        dailyPrecipitation.push({
+            date: weatherData.daily.time[i].toISOString().split("T")[0],
+            precipitation: weatherData.daily.precipitationSum[i]
+        });
+    }
+    const groupedByMonth = dailyPrecipitation.reduce((monthAcc, day) => {
+        const [year, month] = day.date.split('-');
+        const yearMonth = `${year}-${month}`;
+        if (!monthAcc[yearMonth]) {
+            monthAcc[yearMonth] = {
+                totalPrecipitation: 0,
+                daysCount: 0
+            };
+        }
+        monthAcc[yearMonth].totalPrecipitation += day.precipitation;
+        monthAcc[yearMonth].daysCount += 1;
+        return monthAcc;
+    }, {});
+    const averagePrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation, daysCount }]) => ({
+        month,
+        averagePrecipitation: totalPrecipitation / daysCount
+    }));
+    return averagePrecipitationByMonth;
+}
+window.getPrecipitation = getPrecipitation;
+
+
 /***/ })
 
 /******/ 	});
@@ -2572,79 +2650,73 @@ exports.fetchWeatherApi = fetchWeatherApi;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/*!***********************************!*\
+  !*** ./src/precipitationTable.ts ***!
+  \***********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getWeatherInfo: () => (/* binding */ getWeatherInfo)
+/* harmony export */   thiTable: () => (/* binding */ thiTable)
 /* harmony export */ });
-/* harmony import */ var openmeteo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! openmeteo */ "./node_modules/openmeteo/lib/index.js");
-/* harmony import */ var openmeteo__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(openmeteo__WEBPACK_IMPORTED_MODULE_0__);
-// import { setCity } from "./setCity"
+/* harmony import */ var _getPrecipitation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getPrecipitation */ "./src/getPrecipitation.ts");
 
-async function getWeatherInfo() {
-    // const cityCoordinates = await setCity()
-    let lat = document.querySelector('#latitude').innerHTML;
-    let lon = document.querySelector('#longitude').innerHTML;
-    const getStartDate = () => {
-        return document.getElementById('startDate').value;
-    };
-    const getEndDate = () => {
-        return document.getElementById('endDate').value;
-    };
-    const params = {
-        "latitude": lat,
-        "longitude": lon,
-        "start_date": getStartDate(),
-        "end_date": getEndDate(),
-        "hourly": ["temperature_2m", "relative_humidity_2m"]
-    };
-    const url = "https://archive-api.open-meteo.com/v1/archive";
-    const responses = await (0,openmeteo__WEBPACK_IMPORTED_MODULE_0__.fetchWeatherApi)(url, params);
-    // Helper function to form time ranges
-    const range = (start, stop, step) => Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
-    // Process first location. Add a for-loop for multiple locations or weather models
-    const response = responses[0];
-    // Attributes for timezone and location
-    const utcOffsetSeconds = response.utcOffsetSeconds();
-    const hourly = response.hourly();
-    // Note: The order of weather variables in the URL query and the indices below need to match!
-    const weatherData = {
-        hourly: {
-            time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
-            temperature2m: hourly.variables(0).valuesArray(),
-            relativeHumidity2m: hourly.variables(1).valuesArray(),
-        },
-    };
-    // `weatherData` now contains a simple structure with arrays for datetime and weather data
-    let hoursData = [];
-    for (let i = 0; i < weatherData.hourly.time.length; i++) {
-        let temp = Math.round(weatherData.hourly.temperature2m[i] * 100) / 100;
-        let humd = Math.round(weatherData.hourly.relativeHumidity2m[i] * 100) / 100;
-        let thi = Math.round(((0.8 * temp) + ((humd / 100) * (temp - 14.4)) + 46.4) * 100) / 100;
-        hoursData.push({
-            date: weatherData.hourly.time[i].toISOString(),
-            temperature: temp,
-            humidity: humd,
-            THI: thi
-        });
+async function thiTable() {
+    let data = [];
+    const monthPrecipitation = await (0,_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__.getPrecipitation)();
+    for (const [date, obj] of Object.entries(monthPrecipitation)) {
+        data.push(obj);
     }
-    const groupedByDayWithMaxTHI = hoursData.reduce((daysLog, day) => {
-        const date = day.date.split("T")[0];
-        // @ts-ignore
-        if (!daysLog[date] || day.THI > daysLog[date].THI) {
-            // @ts-ignore
-            daysLog[date] = day;
+    //Pagination of sigle days table
+    const rowsPerPage = 7;
+    let currentPage = 1;
+    function displayTable(page) {
+        const table = document.getElementById("PrecipitationTable");
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const slicedData = data.slice(startIndex, endIndex);
+        //Clear existing table rows
+        table.innerHTML = `
+            <thead>
+                <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Precipitation</th>
+                </tr>
+            </thead>`;
+        //Add new rows to the table
+        slicedData.forEach(item => {
+            //@ts-expect-error
+            const row = table.insertRow();
+            const monthCell = row.insertCell(0);
+            const precipitationCell = row.insertCell(1);
+            monthCell.innerHTML = item.month;
+            precipitationCell.innerHTML = item.averagePrecipitation;
+        });
+        //Update pagination
+        updatePagination(page);
+    }
+    function updatePagination(currentPage) {
+        const pageCount = Math.ceil(data.length / rowsPerPage);
+        const paginationContainer = document.getElementById("pagination");
+        paginationContainer.innerHTML = "";
+        for (let i = 1; i <= pageCount; i++) {
+            const pageLink = document.createElement('a');
+            pageLink.href = '#daysTable';
+            pageLink.innerText = `${i}`;
+            pageLink.onclick = function () {
+                displayTable(i);
+            };
+            if (i === currentPage) {
+                pageLink.style.fontWeight = "bold";
+            }
+            paginationContainer.appendChild(pageLink);
+            paginationContainer.appendChild(document.createTextNode(" "));
         }
-        return daysLog;
-    }, []);
-    return groupedByDayWithMaxTHI;
+    }
+    displayTable(currentPage);
 }
-window.getWeatherInfo = getWeatherInfo;
+window.thiTable = thiTable;
 
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=getWeatherInfo.bundle.js.map
+//# sourceMappingURL=precipitationTable.bundle.js.map

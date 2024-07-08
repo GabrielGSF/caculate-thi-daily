@@ -57,6 +57,7 @@ function showCityResults(input) {
                             onclick="setCity(
                                 ${data.results[i].latitude},
                                 ${data.results[i].longitude},
+                                '${data.results[i].timezone}',
                                 '${data.results[i].name}',
                                 '${data.results[i].admin1}',
                                 '${data.results[i].country}'

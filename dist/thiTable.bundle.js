@@ -2516,7 +2516,6 @@ __webpack_require__.r(__webpack_exports__);
 // import { setCity } from "./setCity"
 
 async function getWeatherInfo() {
-    // const cityCoordinates = await setCity()
     let lat = document.querySelector('#latitude').innerHTML;
     let lon = document.querySelector('#longitude').innerHTML;
     const getStartDate = () => {
@@ -2649,52 +2648,79 @@ window.getWeatherInfo = getWeatherInfo;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*****************************!*\
-  !*** ./src/countTHIDays.ts ***!
-  \*****************************/
+/*!*************************!*\
+  !*** ./src/thiTable.ts ***!
+  \*************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   countTHIDays: () => (/* binding */ countTHIDays)
+/* harmony export */   thiTable: () => (/* binding */ thiTable)
 /* harmony export */ });
 /* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
 
-async function countTHIDays() {
-    const daysThi = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
-    const countsStressDays = {
-        lightHeat: 0,
-        moderateHeat: 0,
-        heavyHeat: 0,
-        severeHeat: 0,
-        deadlyHeat: 0,
-        noStress: 0,
-    };
-    for (const [date, obj] of Object.entries(daysThi)) {
-        // @ts-ignore
-        let thi = obj.THI;
-        if (thi > 100) {
-            countsStressDays.deadlyHeat += 1;
-        }
-        else if (thi >= 68.00 && thi < 72.00) {
-            countsStressDays.lightHeat += 1;
-        }
-        else if (thi >= 72.00 && thi < 80.00) {
-            countsStressDays.moderateHeat += 1;
-        }
-        else if (thi >= 80 && thi < 90) {
-            countsStressDays.heavyHeat += 1;
-        }
-        else if (thi >= 90 && thi <= 100) {
-            countsStressDays.severeHeat += 1;
-        }
-        else if (thi < 68) {
-            countsStressDays.noStress += 1;
+async function thiTable() {
+    let data = [];
+    const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    for (const [date, obj] of Object.entries(daysTHI)) {
+        data.push(obj);
+    }
+    //Pagination of sigle days table
+    const rowsPerPage = 7;
+    let currentPage = 1;
+    function displayTable(page) {
+        const table = document.getElementById("THITable");
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const slicedData = data.slice(startIndex, endIndex);
+        //Clear existing table rows
+        table.innerHTML = `
+            <thead>
+                <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Temperature</th>
+                <th scope="col">Humidity</th>
+                <th scope="col">THI</th>
+                </tr>
+            </thead>`;
+        //Add new rows to the table
+        slicedData.forEach(item => {
+            //@ts-expect-error
+            const row = table.insertRow();
+            const dateCell = row.insertCell(0);
+            const tempCell = row.insertCell(1);
+            const humdCell = row.insertCell(2);
+            const thiCell = row.insertCell(3);
+            dateCell.innerHTML = item.date.split("T")[0];
+            tempCell.innerHTML = item.temperature;
+            humdCell.innerHTML = item.humidity;
+            thiCell.innerHTML = item.THI;
+        });
+        //Update pagination
+        updatePagination(page);
+    }
+    function updatePagination(currentPage) {
+        const pageCount = Math.ceil(data.length / rowsPerPage);
+        const paginationContainer = document.getElementById("pagination");
+        paginationContainer.innerHTML = "";
+        for (let i = 1; i <= pageCount; i++) {
+            const pageLink = document.createElement('a');
+            // pageLink.href = '#daysTable'
+            pageLink.innerText = `${i}`;
+            pageLink.onclick = function () {
+                displayTable(i);
+            };
+            if (i === currentPage) {
+                pageLink.style.fontWeight = "bold";
+            }
+            paginationContainer.appendChild(pageLink);
+            paginationContainer.appendChild(document.createTextNode(" "));
         }
     }
-    return countsStressDays;
+    displayTable(currentPage);
 }
+window.thiTable = thiTable;
 
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=countTHIDays.bundle.js.map
+//# sourceMappingURL=thiTable.bundle.js.map

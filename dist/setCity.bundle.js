@@ -41,10 +41,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   setCity: () => (/* binding */ setCity)
 /* harmony export */ });
-async function setCity(lat, lon, name, admin1, country) {
+async function setCity(lat, lon, timezone, name, admin1, country) {
     let City = {
         latitude: lat,
         longitude: lon,
+        timezone: timezone,
         name: name,
         admin1: admin1,
         countryName: country
@@ -58,6 +59,7 @@ async function setCity(lat, lon, name, admin1, country) {
     document.querySelector('#cityInformation').innerHTML = `${City.name} - ${City.admin1} - ${City.countryName}`;
     document.querySelector('#latitude').innerHTML = `${City.latitude}`;
     document.querySelector('#longitude').innerHTML = `${City.longitude}`;
+    document.querySelector('#timezone').innerHTML = `${City.timezone}`;
 }
 window.setCity = setCity;
 

@@ -10,7 +10,7 @@
     "sourceMap": true,
     "target": "es2022",
     "types": ["node"],
-    "outDir": "public/dist",
+    "outDir": "dist",
     // "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks":false,
     "strictPropertyInitialization": false,
@@ -24,7 +24,11 @@
     "src/getWeatherInfo.ts",
     "src/setCity.ts",
     "src/showCityResults.ts",
-    "src/acquisitions.ts"
+    "src/chartTHI.ts",
+    "src/getPrecipitation.ts",
+    "src/chartPrecipitation.ts",
+    "src/thiTable.ts",
+    "src/precipitationTable.ts",
   ],
   // "include": ["src/**/*", "dist/app.js"],
   "exclude": ["node_modules"]

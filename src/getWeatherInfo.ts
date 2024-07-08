@@ -5,7 +5,6 @@ declare const window: any;
 
 export async function getWeatherInfo() {
 
-    // const cityCoordinates = await setCity()
     let lat = document.querySelector('#latitude').innerHTML
     let lon = document.querySelector('#longitude').innerHTML
     const getStartDate = () => {

@@ -2516,7 +2516,6 @@ __webpack_require__.r(__webpack_exports__);
 // import { setCity } from "./setCity"
 
 async function getWeatherInfo() {
-    // const cityCoordinates = await setCity()
     let lat = document.querySelector('#latitude').innerHTML;
     let lon = document.querySelector('#longitude').innerHTML;
     const getStartDate = () => {
@@ -17755,28 +17754,28 @@ function styleChanged(style, prevStyle) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*****************************!*\
-  !*** ./src/acquisitions.ts ***!
-  \*****************************/
+/*!*************************!*\
+  !*** ./src/chartTHI.ts ***!
+  \*************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   printData2: () => (/* binding */ printData2)
+/* harmony export */   chartTHI: () => (/* binding */ chartTHI)
 /* harmony export */ });
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
 /* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
 
 
-async function printData2() {
+async function chartTHI() {
     const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__.getWeatherInfo)();
     let data = [];
     for (const [date, obj] of Object.entries(daysTHI)) {
         data.push(obj);
     }
-    let chartStatus = chart_js_auto__WEBPACK_IMPORTED_MODULE_0__["default"].getChart("acquisitions"); // <canvas> id
+    let chartStatus = chart_js_auto__WEBPACK_IMPORTED_MODULE_0__["default"].getChart("chartTHI"); // <canvas> id
     if (chartStatus != undefined) {
         chartStatus.destroy();
     }
-    let grapharea = document.getElementById('acquisitions');
+    let grapharea = document.getElementById('chartTHI');
     let myChart = new chart_js_auto__WEBPACK_IMPORTED_MODULE_0__["default"](grapharea, {
         type: 'line',
         data: {
@@ -17795,4 +17794,4 @@ async function printData2() {
 
 /******/ })()
 ;
-//# sourceMappingURL=acquisitions.bundle.js.map
+//# sourceMappingURL=chartTHI.bundle.js.map
