@@ -2572,9 +2572,9 @@ exports.fetchWeatherApi = fetchWeatherApi;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/*!************************************!*\
+  !*** ./src/data/getWeatherInfo.ts ***!
+  \************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getWeatherInfo: () => (/* binding */ getWeatherInfo)

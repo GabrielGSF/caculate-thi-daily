@@ -3,16 +3,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    showCalcTHI: './src/showCalcTHI.ts',
-    setCity: './src/setCity.ts',
-    showCityResults: './src/showCityResults.ts',
-    getWeatherInfo: './src/getWeatherInfo.ts',
-    countTHIDays: './src/countTHIDays.ts',
-    chartTHI: "./src/chartTHI.ts",
-    getPrecipitation: "./src/getPrecipitation.ts",
-    chartPrecipitation: "./src/chartPrecipitation.ts",
-    thiTable: "./src/thiTable.ts",
-    precipitationTable: "./src/precipitationTable.ts"
+    showCalcTHI: './src/app.ts',
+    setCity: './src/utils/setCity.ts',
+    showCityResults: './src/utils/showCityResults.ts',
+    getWeatherInfo: './src/data/getWeatherInfo.ts',
+    countTHIDays: './src/utils/countTHIDays.ts',
+    chartTHI: "./src/charts/chartTHI.ts",
+    getPrecipitation: "./src/data/getPrecipitation.ts",
+    chartPrecipitation: "./src/charts/chartPrecipitation.ts",
+    thiTable: "./src/tables/thiTable.ts",
+    precipitationTable: "./src/tables/precipitationTable.ts"
   },
   module: {
     rules: [

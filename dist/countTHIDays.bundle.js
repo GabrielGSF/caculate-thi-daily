@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/getWeatherInfo.ts":
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/***/ "./src/data/getWeatherInfo.ts":
+/*!************************************!*\
+  !*** ./src/data/getWeatherInfo.ts ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2648,17 +2648,17 @@ window.getWeatherInfo = getWeatherInfo;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*****************************!*\
-  !*** ./src/countTHIDays.ts ***!
-  \*****************************/
+/*!***********************************!*\
+  !*** ./src/utils/countTHIDays.ts ***!
+  \***********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   countTHIDays: () => (/* binding */ countTHIDays)
 /* harmony export */ });
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
 async function countTHIDays() {
-    const daysThi = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    const daysThi = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
     const countsStressDays = {
         lightHeat: 0,
         moderateHeat: 0,

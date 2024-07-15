@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { getWeatherInfo } from './getWeatherInfo';
+import { getWeatherInfo } from '../data/getWeatherInfo';
 
 declare const window: any;
 
@@ -56,7 +56,7 @@ export async function thiTable() {
 
         for(let i = 1; i <= pageCount;  i++) {
             const pageLink = document.createElement('a')
-            pageLink.href = '#PrecipitationTable'
+            pageLink.href = '#THITable'
             pageLink.innerText = `${i}`
             pageLink.onclick = function() {
                 displayTable(i)

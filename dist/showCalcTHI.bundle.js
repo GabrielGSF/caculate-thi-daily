@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/chartPrecipitation.ts":
-/*!***********************************!*\
-  !*** ./src/chartPrecipitation.ts ***!
-  \***********************************/
+/***/ "./src/charts/chartPrecipitation.ts":
+/*!******************************************!*\
+  !*** ./src/charts/chartPrecipitation.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2512,11 +2512,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   chartPrecipitation: () => (/* binding */ chartPrecipitation)
 /* harmony export */ });
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
-/* harmony import */ var _getPrecipitation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getPrecipitation */ "./src/getPrecipitation.ts");
+/* harmony import */ var _data_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/getPrecipitation */ "./src/data/getPrecipitation.ts");
 
 
 async function chartPrecipitation() {
-    const averagePrecipitation = await (0,_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__.getPrecipitation)();
+    const averagePrecipitation = await (0,_data_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__.getPrecipitation)();
     let data = [];
     for (const [date, obj] of Object.entries(averagePrecipitation)) {
         data.push(obj);
@@ -2533,7 +2533,7 @@ async function chartPrecipitation() {
             datasets: [
                 {
                     label: 'Precipitation',
-                    data: data.map(row => row.averagePrecipitation)
+                    data: data.map(row => row.sumPrecipitation)
                 }
             ]
         }
@@ -2543,10 +2543,10 @@ async function chartPrecipitation() {
 
 /***/ }),
 
-/***/ "./src/chartTHI.ts":
-/*!*************************!*\
-  !*** ./src/chartTHI.ts ***!
-  \*************************/
+/***/ "./src/charts/chartTHI.ts":
+/*!********************************!*\
+  !*** ./src/charts/chartTHI.ts ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2554,11 +2554,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   chartTHI: () => (/* binding */ chartTHI)
 /* harmony export */ });
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
 
 async function chartTHI() {
-    const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__.getWeatherInfo)();
+    const daysTHI = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__.getWeatherInfo)();
     let data = [];
     for (const [date, obj] of Object.entries(daysTHI)) {
         data.push(obj);
@@ -2585,60 +2585,10 @@ async function chartTHI() {
 
 /***/ }),
 
-/***/ "./src/countTHIDays.ts":
-/*!*****************************!*\
-  !*** ./src/countTHIDays.ts ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   countTHIDays: () => (/* binding */ countTHIDays)
-/* harmony export */ });
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
-
-async function countTHIDays() {
-    const daysThi = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
-    const countsStressDays = {
-        lightHeat: 0,
-        moderateHeat: 0,
-        heavyHeat: 0,
-        severeHeat: 0,
-        deadlyHeat: 0,
-        noStress: 0,
-    };
-    for (const [date, obj] of Object.entries(daysThi)) {
-        // @ts-ignore
-        let thi = obj.THI;
-        if (thi > 100) {
-            countsStressDays.deadlyHeat += 1;
-        }
-        else if (thi >= 68.00 && thi < 72.00) {
-            countsStressDays.lightHeat += 1;
-        }
-        else if (thi >= 72.00 && thi < 80.00) {
-            countsStressDays.moderateHeat += 1;
-        }
-        else if (thi >= 80 && thi < 90) {
-            countsStressDays.heavyHeat += 1;
-        }
-        else if (thi >= 90 && thi <= 100) {
-            countsStressDays.severeHeat += 1;
-        }
-        else if (thi < 68) {
-            countsStressDays.noStress += 1;
-        }
-    }
-    return countsStressDays;
-}
-
-
-/***/ }),
-
-/***/ "./src/getPrecipitation.ts":
-/*!*********************************!*\
-  !*** ./src/getPrecipitation.ts ***!
-  \*********************************/
+/***/ "./src/data/getPrecipitation.ts":
+/*!**************************************!*\
+  !*** ./src/data/getPrecipitation.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2695,28 +2645,26 @@ async function getPrecipitation() {
         if (!monthAcc[yearMonth]) {
             monthAcc[yearMonth] = {
                 totalPrecipitation: 0,
-                daysCount: 0
             };
         }
         monthAcc[yearMonth].totalPrecipitation += day.precipitation;
-        monthAcc[yearMonth].daysCount += 1;
         return monthAcc;
     }, {});
-    const averagePrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation, daysCount }]) => ({
+    const sumPrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation }]) => ({
         month,
-        averagePrecipitation: totalPrecipitation / daysCount
+        sumPrecipitation: totalPrecipitation
     }));
-    return averagePrecipitationByMonth;
+    return sumPrecipitationByMonth;
 }
 window.getPrecipitation = getPrecipitation;
 
 
 /***/ }),
 
-/***/ "./src/getWeatherInfo.ts":
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/***/ "./src/data/getWeatherInfo.ts":
+/*!************************************!*\
+  !*** ./src/data/getWeatherInfo.ts ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2789,21 +2737,92 @@ window.getWeatherInfo = getWeatherInfo;
 
 /***/ }),
 
-/***/ "./src/thiTable.ts":
-/*!*************************!*\
-  !*** ./src/thiTable.ts ***!
-  \*************************/
+/***/ "./src/tables/precipitationTable.ts":
+/*!******************************************!*\
+  !*** ./src/tables/precipitationTable.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   precipitationTable: () => (/* binding */ precipitationTable)
+/* harmony export */ });
+/* harmony import */ var _data_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getPrecipitation */ "./src/data/getPrecipitation.ts");
+
+async function precipitationTable() {
+    let data = [];
+    const monthPrecipitation = await (0,_data_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__.getPrecipitation)();
+    for (const [date, obj] of Object.entries(monthPrecipitation)) {
+        data.push(obj);
+    }
+    //Pagination of sigle days table
+    const rowsPerPage = 7;
+    let currentPage = 1;
+    function displayTable(page) {
+        const table = document.getElementById("PrecipitationTable");
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const slicedData = data.slice(startIndex, endIndex);
+        //Clear existing table rows
+        table.innerHTML = `
+            <thead>
+                <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Average Precipitation</th>
+                </tr>
+            </thead>`;
+        //Add new rows to the table
+        slicedData.forEach(item => {
+            //@ts-expect-error
+            const row = table.insertRow();
+            const monthCell = row.insertCell(0);
+            const precipitationCell = row.insertCell(1);
+            monthCell.innerHTML = item.month;
+            precipitationCell.innerHTML = item.sumPrecipitation.toFixed(2);
+        });
+        //Update pagination
+        updatePagination(page);
+    }
+    function updatePagination(currentPage) {
+        const pageCount = Math.ceil(data.length / rowsPerPage);
+        const paginationContainer = document.getElementById("paginationPrecip");
+        paginationContainer.innerHTML = "";
+        for (let i = 1; i <= pageCount; i++) {
+            const pageLink = document.createElement('a');
+            pageLink.href = '#PrecipitationTable';
+            pageLink.innerText = `${i}`;
+            pageLink.onclick = function () {
+                displayTable(i);
+            };
+            if (i === currentPage) {
+                pageLink.style.fontWeight = "bold";
+            }
+            paginationContainer.appendChild(pageLink);
+            paginationContainer.appendChild(document.createTextNode(" "));
+        }
+    }
+    displayTable(currentPage);
+}
+window.precipitationTable = precipitationTable;
+
+
+/***/ }),
+
+/***/ "./src/tables/thiTable.ts":
+/*!********************************!*\
+  !*** ./src/tables/thiTable.ts ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   thiTable: () => (/* binding */ thiTable)
 /* harmony export */ });
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
 async function thiTable() {
     let data = [];
-    const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    const daysTHI = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
     for (const [date, obj] of Object.entries(daysTHI)) {
         data.push(obj);
     }
@@ -2847,7 +2866,7 @@ async function thiTable() {
         paginationContainer.innerHTML = "";
         for (let i = 1; i <= pageCount; i++) {
             const pageLink = document.createElement('a');
-            // pageLink.href = '#daysTable'
+            pageLink.href = '#THITable';
             pageLink.innerText = `${i}`;
             pageLink.onclick = function () {
                 displayTable(i);
@@ -2862,6 +2881,56 @@ async function thiTable() {
     displayTable(currentPage);
 }
 window.thiTable = thiTable;
+
+
+/***/ }),
+
+/***/ "./src/utils/countTHIDays.ts":
+/*!***********************************!*\
+  !*** ./src/utils/countTHIDays.ts ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   countTHIDays: () => (/* binding */ countTHIDays)
+/* harmony export */ });
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
+
+async function countTHIDays() {
+    const daysThi = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    const countsStressDays = {
+        lightHeat: 0,
+        moderateHeat: 0,
+        heavyHeat: 0,
+        severeHeat: 0,
+        deadlyHeat: 0,
+        noStress: 0,
+    };
+    for (const [date, obj] of Object.entries(daysThi)) {
+        // @ts-ignore
+        let thi = obj.THI;
+        if (thi > 100) {
+            countsStressDays.deadlyHeat += 1;
+        }
+        else if (thi >= 68.00 && thi < 72.00) {
+            countsStressDays.lightHeat += 1;
+        }
+        else if (thi >= 72.00 && thi < 80.00) {
+            countsStressDays.moderateHeat += 1;
+        }
+        else if (thi >= 80 && thi < 90) {
+            countsStressDays.heavyHeat += 1;
+        }
+        else if (thi >= 90 && thi <= 100) {
+            countsStressDays.severeHeat += 1;
+        }
+        else if (thi < 68) {
+            countsStressDays.noStress += 1;
+        }
+    }
+    return countsStressDays;
+}
 
 
 /***/ }),
@@ -18043,15 +18112,17 @@ function styleChanged(style, prevStyle) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!****************************!*\
-  !*** ./src/showCalcTHI.ts ***!
-  \****************************/
+/*!********************!*\
+  !*** ./src/app.ts ***!
+  \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _countTHIDays__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./countTHIDays */ "./src/countTHIDays.ts");
-/* harmony import */ var _chartTHI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chartTHI */ "./src/chartTHI.ts");
-/* harmony import */ var _chartPrecipitation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chartPrecipitation */ "./src/chartPrecipitation.ts");
-/* harmony import */ var _thiTable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./thiTable */ "./src/thiTable.ts");
-/* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
+/* harmony import */ var _utils_countTHIDays__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/countTHIDays */ "./src/utils/countTHIDays.ts");
+/* harmony import */ var _charts_chartTHI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./charts/chartTHI */ "./src/charts/chartTHI.ts");
+/* harmony import */ var _charts_chartPrecipitation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./charts/chartPrecipitation */ "./src/charts/chartPrecipitation.ts");
+/* harmony import */ var _tables_thiTable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tables/thiTable */ "./src/tables/thiTable.ts");
+/* harmony import */ var _tables_precipitationTable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tables/precipitationTable */ "./src/tables/precipitationTable.ts");
+/* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
+
 
 
 
@@ -18067,7 +18138,7 @@ const dataPrecipitation = [
     { month: 0, averagePrecipitation: 0 },
 ];
 let graphareaPrecipitation = document.getElementById('chartPrecipitation');
-let chartPrecipitationBase = new chart_js_auto__WEBPACK_IMPORTED_MODULE_4__["default"](graphareaPrecipitation, {
+let chartPrecipitationBase = new chart_js_auto__WEBPACK_IMPORTED_MODULE_5__["default"](graphareaPrecipitation, {
     type: 'line',
     data: {
         labels: dataPrecipitation.map(row => row.month),
@@ -18089,7 +18160,7 @@ const dataTHI = [
     { month: 0, averagePrecipitation: 0 },
 ];
 let graphareaTHI = document.getElementById('chartTHI');
-let chartTHIBase = new chart_js_auto__WEBPACK_IMPORTED_MODULE_4__["default"](graphareaTHI, {
+let chartTHIBase = new chart_js_auto__WEBPACK_IMPORTED_MODULE_5__["default"](graphareaTHI, {
     type: 'line',
     data: {
         labels: dataTHI.map(row => row.month),
@@ -18102,7 +18173,7 @@ let chartTHIBase = new chart_js_auto__WEBPACK_IMPORTED_MODULE_4__["default"](gra
     }
 });
 async function showCalcTHI() {
-    const values = await (0,_countTHIDays__WEBPACK_IMPORTED_MODULE_0__.countTHIDays)();
+    const values = await (0,_utils_countTHIDays__WEBPACK_IMPORTED_MODULE_0__.countTHIDays)();
     //Table Stress data
     document.querySelector('#noStress').innerHTML = `${values.noStress}`;
     document.querySelector('#lightHeat').innerHTML = `${values.lightHeat}`;
@@ -18110,9 +18181,10 @@ async function showCalcTHI() {
     document.querySelector('#heavyHeat').innerHTML = `${values.heavyHeat}`;
     document.querySelector('#severeHeat').innerHTML = `${values.severeHeat}`;
     document.querySelector('#deadlyHeat').innerHTML = `${values.deadlyHeat}`;
-    (0,_thiTable__WEBPACK_IMPORTED_MODULE_3__.thiTable)();
-    (0,_chartTHI__WEBPACK_IMPORTED_MODULE_1__.chartTHI)();
-    (0,_chartPrecipitation__WEBPACK_IMPORTED_MODULE_2__.chartPrecipitation)();
+    (0,_tables_thiTable__WEBPACK_IMPORTED_MODULE_3__.thiTable)();
+    (0,_charts_chartTHI__WEBPACK_IMPORTED_MODULE_1__.chartTHI)();
+    (0,_tables_precipitationTable__WEBPACK_IMPORTED_MODULE_4__.precipitationTable)();
+    (0,_charts_chartPrecipitation__WEBPACK_IMPORTED_MODULE_2__.chartPrecipitation)();
 }
 window.showCalcTHI = showCalcTHI;
 

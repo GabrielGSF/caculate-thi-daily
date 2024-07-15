@@ -34,9 +34,9 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-/*!********************************!*\
-  !*** ./src/showCityResults.ts ***!
-  \********************************/
+/*!**************************************!*\
+  !*** ./src/utils/showCityResults.ts ***!
+  \**************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   showCityResults: () => (/* binding */ showCityResults)

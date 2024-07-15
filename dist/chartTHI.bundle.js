@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/getWeatherInfo.ts":
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/***/ "./src/data/getWeatherInfo.ts":
+/*!************************************!*\
+  !*** ./src/data/getWeatherInfo.ts ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -17754,19 +17754,19 @@ function styleChanged(style, prevStyle) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*************************!*\
-  !*** ./src/chartTHI.ts ***!
-  \*************************/
+/*!********************************!*\
+  !*** ./src/charts/chartTHI.ts ***!
+  \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   chartTHI: () => (/* binding */ chartTHI)
 /* harmony export */ });
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
 
 async function chartTHI() {
-    const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__.getWeatherInfo)();
+    const daysTHI = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_1__.getWeatherInfo)();
     let data = [];
     for (const [date, obj] of Object.entries(daysTHI)) {
         data.push(obj);

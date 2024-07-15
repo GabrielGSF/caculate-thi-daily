@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import { countTHIDays } from './countTHIDays';
-import { chartTHI } from './chartTHI';
-import { chartPrecipitation } from './chartPrecipitation';
-import { thiTable } from './thiTable';
-import { precipitationTable } from './precipitationTable';
+import { countTHIDays } from './utils/countTHIDays';
+import { chartTHI } from './charts/chartTHI';
+import { chartPrecipitation } from './charts/chartPrecipitation';
+import { thiTable } from './tables/thiTable';
+import { precipitationTable } from './tables/precipitationTable';
 import Chart from 'chart.js/auto'
 
 

@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/getPrecipitation.ts":
-/*!*********************************!*\
-  !*** ./src/getPrecipitation.ts ***!
-  \*********************************/
+/***/ "./src/data/getPrecipitation.ts":
+/*!**************************************!*\
+  !*** ./src/data/getPrecipitation.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2561,18 +2561,16 @@ async function getPrecipitation() {
         if (!monthAcc[yearMonth]) {
             monthAcc[yearMonth] = {
                 totalPrecipitation: 0,
-                daysCount: 0
             };
         }
         monthAcc[yearMonth].totalPrecipitation += day.precipitation;
-        monthAcc[yearMonth].daysCount += 1;
         return monthAcc;
     }, {});
-    const averagePrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation, daysCount }]) => ({
+    const sumPrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation }]) => ({
         month,
-        averagePrecipitation: totalPrecipitation / daysCount
+        sumPrecipitation: totalPrecipitation
     }));
-    return averagePrecipitationByMonth;
+    return sumPrecipitationByMonth;
 }
 window.getPrecipitation = getPrecipitation;
 
@@ -2650,18 +2648,18 @@ window.getPrecipitation = getPrecipitation;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***********************************!*\
-  !*** ./src/precipitationTable.ts ***!
-  \***********************************/
+/*!******************************************!*\
+  !*** ./src/tables/precipitationTable.ts ***!
+  \******************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   thiTable: () => (/* binding */ thiTable)
+/* harmony export */   precipitationTable: () => (/* binding */ precipitationTable)
 /* harmony export */ });
-/* harmony import */ var _getPrecipitation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getPrecipitation */ "./src/getPrecipitation.ts");
+/* harmony import */ var _data_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getPrecipitation */ "./src/data/getPrecipitation.ts");
 
-async function thiTable() {
+async function precipitationTable() {
     let data = [];
-    const monthPrecipitation = await (0,_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__.getPrecipitation)();
+    const monthPrecipitation = await (0,_data_getPrecipitation__WEBPACK_IMPORTED_MODULE_0__.getPrecipitation)();
     for (const [date, obj] of Object.entries(monthPrecipitation)) {
         data.push(obj);
     }
@@ -2678,7 +2676,7 @@ async function thiTable() {
             <thead>
                 <tr>
                 <th scope="col">Month</th>
-                <th scope="col">Precipitation</th>
+                <th scope="col">Average Precipitation</th>
                 </tr>
             </thead>`;
         //Add new rows to the table
@@ -2688,18 +2686,18 @@ async function thiTable() {
             const monthCell = row.insertCell(0);
             const precipitationCell = row.insertCell(1);
             monthCell.innerHTML = item.month;
-            precipitationCell.innerHTML = item.averagePrecipitation;
+            precipitationCell.innerHTML = item.sumPrecipitation.toFixed(2);
         });
         //Update pagination
         updatePagination(page);
     }
     function updatePagination(currentPage) {
         const pageCount = Math.ceil(data.length / rowsPerPage);
-        const paginationContainer = document.getElementById("pagination");
+        const paginationContainer = document.getElementById("paginationPrecip");
         paginationContainer.innerHTML = "";
         for (let i = 1; i <= pageCount; i++) {
             const pageLink = document.createElement('a');
-            pageLink.href = '#daysTable';
+            pageLink.href = '#PrecipitationTable';
             pageLink.innerText = `${i}`;
             pageLink.onclick = function () {
                 displayTable(i);
@@ -2713,7 +2711,7 @@ async function thiTable() {
     }
     displayTable(currentPage);
 }
-window.thiTable = thiTable;
+window.precipitationTable = precipitationTable;
 
 })();
 

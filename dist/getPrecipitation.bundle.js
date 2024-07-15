@@ -2572,9 +2572,9 @@ exports.fetchWeatherApi = fetchWeatherApi;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*********************************!*\
-  !*** ./src/getPrecipitation.ts ***!
-  \*********************************/
+/*!**************************************!*\
+  !*** ./src/data/getPrecipitation.ts ***!
+  \**************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getPrecipitation: () => (/* binding */ getPrecipitation)
@@ -2629,18 +2629,16 @@ async function getPrecipitation() {
         if (!monthAcc[yearMonth]) {
             monthAcc[yearMonth] = {
                 totalPrecipitation: 0,
-                daysCount: 0
             };
         }
         monthAcc[yearMonth].totalPrecipitation += day.precipitation;
-        monthAcc[yearMonth].daysCount += 1;
         return monthAcc;
     }, {});
-    const averagePrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation, daysCount }]) => ({
+    const sumPrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation }]) => ({
         month,
-        averagePrecipitation: totalPrecipitation / daysCount
+        sumPrecipitation: totalPrecipitation
     }));
-    return averagePrecipitationByMonth;
+    return sumPrecipitationByMonth;
 }
 window.getPrecipitation = getPrecipitation;
 

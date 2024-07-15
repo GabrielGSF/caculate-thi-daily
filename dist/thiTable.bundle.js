@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/getWeatherInfo.ts":
-/*!*******************************!*\
-  !*** ./src/getWeatherInfo.ts ***!
-  \*******************************/
+/***/ "./src/data/getWeatherInfo.ts":
+/*!************************************!*\
+  !*** ./src/data/getWeatherInfo.ts ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2648,18 +2648,18 @@ window.getWeatherInfo = getWeatherInfo;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*************************!*\
-  !*** ./src/thiTable.ts ***!
-  \*************************/
+/*!********************************!*\
+  !*** ./src/tables/thiTable.ts ***!
+  \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   thiTable: () => (/* binding */ thiTable)
 /* harmony export */ });
-/* harmony import */ var _getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherInfo */ "./src/getWeatherInfo.ts");
+/* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
 async function thiTable() {
     let data = [];
-    const daysTHI = await (0,_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    const daysTHI = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
     for (const [date, obj] of Object.entries(daysTHI)) {
         data.push(obj);
     }
@@ -2703,7 +2703,7 @@ async function thiTable() {
         paginationContainer.innerHTML = "";
         for (let i = 1; i <= pageCount; i++) {
             const pageLink = document.createElement('a');
-            // pageLink.href = '#daysTable'
+            pageLink.href = '#THITable';
             pageLink.innerText = `${i}`;
             pageLink.onclick = function () {
                 displayTable(i);

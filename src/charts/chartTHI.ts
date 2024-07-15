@@ -1,5 +1,5 @@
 import Chart from 'chart.js/auto'
-import { getWeatherInfo } from './getWeatherInfo';
+import { getWeatherInfo } from '../data/getWeatherInfo';
 
 export async function chartTHI() {
     const daysTHI = await getWeatherInfo()

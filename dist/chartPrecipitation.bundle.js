@@ -2501,10 +2501,10 @@ exports.fetchWeatherApi = fetchWeatherApi;
 
 /***/ }),
 
-/***/ "./src/getPrecipitation.ts":
-/*!*********************************!*\
-  !*** ./src/getPrecipitation.ts ***!
-  \*********************************/
+/***/ "./src/data/getPrecipitation.ts":
+/*!**************************************!*\
+  !*** ./src/data/getPrecipitation.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2561,18 +2561,16 @@ async function getPrecipitation() {
         if (!monthAcc[yearMonth]) {
             monthAcc[yearMonth] = {
                 totalPrecipitation: 0,
-                daysCount: 0
             };
         }
         monthAcc[yearMonth].totalPrecipitation += day.precipitation;
-        monthAcc[yearMonth].daysCount += 1;
         return monthAcc;
     }, {});
-    const averagePrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation, daysCount }]) => ({
+    const sumPrecipitationByMonth = Object.entries(groupedByMonth).map(([month, { totalPrecipitation }]) => ({
         month,
-        averagePrecipitation: totalPrecipitation / daysCount
+        sumPrecipitation: totalPrecipitation
     }));
-    return averagePrecipitationByMonth;
+    return sumPrecipitationByMonth;
 }
 window.getPrecipitation = getPrecipitation;
 
@@ -17756,19 +17754,19 @@ function styleChanged(style, prevStyle) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***********************************!*\
-  !*** ./src/chartPrecipitation.ts ***!
-  \***********************************/
+/*!******************************************!*\
+  !*** ./src/charts/chartPrecipitation.ts ***!
+  \******************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   chartPrecipitation: () => (/* binding */ chartPrecipitation)
 /* harmony export */ });
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.js");
-/* harmony import */ var _getPrecipitation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getPrecipitation */ "./src/getPrecipitation.ts");
+/* harmony import */ var _data_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/getPrecipitation */ "./src/data/getPrecipitation.ts");
 
 
 async function chartPrecipitation() {
-    const averagePrecipitation = await (0,_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__.getPrecipitation)();
+    const averagePrecipitation = await (0,_data_getPrecipitation__WEBPACK_IMPORTED_MODULE_1__.getPrecipitation)();
     let data = [];
     for (const [date, obj] of Object.entries(averagePrecipitation)) {
         data.push(obj);
@@ -17785,7 +17783,7 @@ async function chartPrecipitation() {
             datasets: [
                 {
                     label: 'Precipitation',
-                    data: data.map(row => row.averagePrecipitation)
+                    data: data.map(row => row.sumPrecipitation)
                 }
             ]
         }

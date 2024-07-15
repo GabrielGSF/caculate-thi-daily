@@ -63,7 +63,6 @@ export async function getPrecipitation() {
 
     interface MonthlyData {
         totalPrecipitation: number;
-        daysCount: number;
     }
 
     const groupedByMonth = dailyPrecipitation.reduce((monthAcc: {[key: string]: MonthlyData}, day: PrecipitationData) => {
@@ -73,26 +72,24 @@ export async function getPrecipitation() {
         if(!monthAcc[yearMonth]) {
             monthAcc[yearMonth] = {
                 totalPrecipitation: 0,
-                daysCount: 0
             }
         }
         
         monthAcc[yearMonth].totalPrecipitation += day.precipitation
-        monthAcc[yearMonth].daysCount += 1;
         
         return monthAcc
     }, {})
 
-    interface MonthlyAverage {
+    interface MonthlySum {
         month: string;
-        averagePrecipitation: number;
+        sumPrecipitation: number;
     }
 
-    const averagePrecipitationByMonth: MonthlyAverage[] = Object.entries(groupedByMonth).map(([month, {totalPrecipitation, daysCount}]) => ({
+    const sumPrecipitationByMonth: MonthlySum[] = Object.entries(groupedByMonth).map(([month, {totalPrecipitation}]) => ({
         month,
-        averagePrecipitation: totalPrecipitation / daysCount
+        sumPrecipitation: totalPrecipitation
     }))
 
-    return averagePrecipitationByMonth
+    return sumPrecipitationByMonth
 }
 window.getPrecipitation = getPrecipitation

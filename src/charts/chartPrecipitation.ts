@@ -1,5 +1,5 @@
 import Chart from 'chart.js/auto'
-import { getPrecipitation } from './getPrecipitation'
+import { getPrecipitation } from '../data/getPrecipitation'
 
 export async function chartPrecipitation() {
     const averagePrecipitation = await getPrecipitation()
@@ -23,7 +23,7 @@ export async function chartPrecipitation() {
             datasets: [
               {
                 label: 'Precipitation',
-                data: data.map(row => row.averagePrecipitation)
+                data: data.map(row => row.sumPrecipitation)
               }
             ]
           }

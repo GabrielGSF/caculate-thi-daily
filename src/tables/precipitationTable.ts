@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { getPrecipitation } from './getPrecipitation';
+import { getPrecipitation } from '../data/getPrecipitation';
 
 declare const window: any;
 
@@ -36,7 +36,7 @@ export async function precipitationTable() {
             const monthCell = row.insertCell(0)
             const precipitationCell = row.insertCell(1)
             monthCell.innerHTML = item.month
-            precipitationCell.innerHTML = item.averagePrecipitation
+            precipitationCell.innerHTML = item.sumPrecipitation.toFixed(2)
         })
 
         //Update pagination
@@ -50,7 +50,7 @@ export async function precipitationTable() {
 
         for(let i = 1; i <= pageCount;  i++) {
             const pageLink = document.createElement('a')
-            pageLink.href = '#precipitationTable'
+            pageLink.href = '#PrecipitationTable'
             pageLink.innerText = `${i}`
             pageLink.onclick = function() {
                 displayTable(i)

@@ -1,4 +1,4 @@
-import { getWeatherInfo } from "./getWeatherInfo"
+import { getWeatherInfo } from "../data/getWeatherInfo"
 import * as _ from 'lodash';
 
 export async function countTHIDays() {
