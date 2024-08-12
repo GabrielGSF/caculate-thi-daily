@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import { countTHIDays } from './utils/countTHIDays';
-import { chartTHI } from './charts/chartTHI';
+import { countTHIDays, countTHIDays2 } from './utils/countTHIDays';
+import { chartTHI} from './charts/chartTHI';
 import { chartPrecipitation } from './charts/chartPrecipitation';
-import { thiTable } from './tables/thiTable';
+import { thiTable} from './tables/thiTable';
 import { precipitationTable } from './tables/precipitationTable';
 import Chart from 'chart.js/auto'
 
@@ -64,8 +64,9 @@ let chartTHIBase = new Chart(
 async function showCalcTHI() {
 
     const values = await countTHIDays();
+    const values2 = await countTHIDays2();
 
-    //Table Stress data
+    //Table Stress data Non-Thermotolerant Taurine Breeds
     document.querySelector('#noStress')!.innerHTML = `${values.noStress}`
     document.querySelector('#lightHeat')!.innerHTML = `${values.lightHeat}`
     document.querySelector('#moderateHeat')!.innerHTML = `${values.moderateHeat}`
@@ -76,6 +77,14 @@ async function showCalcTHI() {
     thiTable();
     chartTHI();
 
+    //Table Stress data Thermotolerant Taurine Breeds
+    document.querySelector('#noStress2')!.innerHTML = `${values2.noStress}`
+    document.querySelector('#lightHeat2')!.innerHTML = `${values2.lightHeat}`
+    document.querySelector('#moderateHeat2')!.innerHTML = `${values2.moderateHeat}`
+    document.querySelector('#heavyHeat2')!.innerHTML = `${values2.heavyHeat}`
+    document.querySelector('#severeHeat2')!.innerHTML = `${values2.severeHeat}`
+
+    // Precipitation Chart / Table
     precipitationTable();
     chartPrecipitation();
 

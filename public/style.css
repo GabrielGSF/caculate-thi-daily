@@ -29,6 +29,10 @@ td {
     height: 41px;
 }
 
+h2 {
+    text-align: center;
+}
+
 .noStress {
     background-color: #cee2f5 !important;
 }
