@@ -5,6 +5,7 @@ import { chartPrecipitation } from './charts/chartPrecipitation';
 import { thiTable} from './tables/thiTable';
 import { precipitationTable } from './tables/precipitationTable';
 import Chart from 'chart.js/auto'
+import "../public/style.css"
 
 
 declare const window: any;

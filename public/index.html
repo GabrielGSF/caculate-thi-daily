@@ -243,6 +243,25 @@
       </div>
     </div>
     
+    <button id="generate-pdf">Gerar e Baixar PDF</button>
+
+    <script>
+      document.getElementById('generate-pdf').addEventListener('click', () => {
+        const url = window.location.href;
+
+        fetch(`/api/generate-pdf?url=${encodeURIComponent(url)}`)
+          .then(response => response.blob())
+          .then(blob => {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'pagina.pdf');
+            document.body.appendChild(link);
+            link.parentNode.removeChild(link);
+          })
+          .catch(error => console.error('Erro ao gerar o PDF:', error));
+      })
+    </script>
     
     <script type="module" src="/dist/chartPrecipitation.bundle.js"></script>
     <script type="module" src="/dist/chartTHI.bundle.js"></script>

@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    showCalcTHI: './src/app.ts',
+    app: './src/app.ts',
     setCity: './src/utils/setCity.ts',
     showCityResults: './src/utils/showCityResults.ts',
     getWeatherInfo: './src/data/getWeatherInfo.ts',
@@ -14,6 +14,11 @@ module.exports = {
     thiTable: "./src/tables/thiTable.ts",
     precipitationTable: "./src/tables/precipitationTable.ts"
   },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true
+  },
   module: {
     rules: [
       {
@@ -21,15 +26,17 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true
   },
   mode: 'development',
   devtool: 'source-map',

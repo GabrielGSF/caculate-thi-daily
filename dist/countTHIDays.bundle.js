@@ -2653,7 +2653,8 @@ var __webpack_exports__ = {};
   \***********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   countTHIDays: () => (/* binding */ countTHIDays)
+/* harmony export */   countTHIDays: () => (/* binding */ countTHIDays),
+/* harmony export */   countTHIDays2: () => (/* binding */ countTHIDays2)
 /* harmony export */ });
 /* harmony import */ var _data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/getWeatherInfo */ "./src/data/getWeatherInfo.ts");
 
@@ -2686,6 +2687,36 @@ async function countTHIDays() {
             countsStressDays.severeHeat += 1;
         }
         else if (thi < 68) {
+            countsStressDays.noStress += 1;
+        }
+    }
+    return countsStressDays;
+}
+async function countTHIDays2() {
+    const daysThi = await (0,_data_getWeatherInfo__WEBPACK_IMPORTED_MODULE_0__.getWeatherInfo)();
+    const countsStressDays = {
+        lightHeat: 0,
+        moderateHeat: 0,
+        heavyHeat: 0,
+        severeHeat: 0,
+        noStress: 0,
+    };
+    for (const [date, obj] of Object.entries(daysThi)) {
+        // @ts-ignore
+        let thi = obj.THI;
+        if (thi > 100) {
+            countsStressDays.severeHeat += 1;
+        }
+        else if (thi >= 80.00 && thi < 84.00) {
+            countsStressDays.lightHeat += 1;
+        }
+        else if (thi >= 84.00 && thi < 92.00) {
+            countsStressDays.moderateHeat += 1;
+        }
+        else if (thi >= 92.00 && thi <= 100) {
+            countsStressDays.heavyHeat += 1;
+        }
+        else if (thi < 80) {
             countsStressDays.noStress += 1;
         }
     }
